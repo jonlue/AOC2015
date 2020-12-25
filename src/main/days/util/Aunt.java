@@ -1,4 +1,4 @@
-package main;
+package main.days.util;
 
 public class Aunt {
 
@@ -13,10 +13,10 @@ public class Aunt {
     }
 
     public boolean check(int[] foundValues) {
-        for(int i = 0; i<values.length; i++){
-            if(values[i] == -1){
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == -1) {
                 continue;
-            }else if(values[i] != foundValues[i]){
+            } else if (values[i] != foundValues[i]) {
                 return false;
             }
         }
@@ -28,18 +28,18 @@ public class Aunt {
     }
 
     public boolean checkExact(int[] foundValues) {
-        for(int i = 0; i<values.length; i++){
-            if(values[i] == -1){
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == -1) {
                 continue;
-            }else if(i == 1 || i == 7){
-                if(values[i] <= foundValues[i]){
+            } else if (i == 1 || i == 7) {
+                if (values[i] <= foundValues[i]) {
                     return false;
                 }
-            }else if(i == 3 || i == 6){
-                if(values[i] >= foundValues[i]) {
+            } else if (i == 3 || i == 6) {
+                if (values[i] >= foundValues[i]) {
                     return false;
                 }
-            }else if(values[i] != foundValues[i]){
+            } else if (values[i] != foundValues[i]) {
                 return false;
             }
         }

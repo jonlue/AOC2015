@@ -1,45 +1,46 @@
-package main;
+package main.days;
 
-public class Matchsticks {
+import main.AOCRiddle;
 
-    private String input;
-    public Matchsticks(String input) {
-        this.input = input.replaceAll("\r","");
+public class Day08 extends AOCRiddle {
+    public Day08(String in, int part) {
+        super(in,part);
     }
 
-    public int solve1(){
+    private final String[] input = getInput().split("\n");
+
+    public String solve1(){
         int codeCharacter = 0;
         int character = 0;
 
-        for(String s : input.split("\n")){
+        for(String s : input){
             codeCharacter += s.length();
             while(s.contains("\\")){
                 char c = s.charAt(s.indexOf("\\")+1);
                 if(c == 'x'){
                     s = s.substring(0,s.indexOf("\\")) + s.substring(s.indexOf("\\")+4);
-                    character += 1;
                 }else{
                     s = s.substring(0,s.indexOf("\\")) + s.substring(s.indexOf("\\")+2);
-                    character += 1;
                 }
+                character += 1;
             }
             s = s.replaceAll("\"","");
             character += s.length();
         }
-        System.out.println("character of code: \t" + codeCharacter);
-        System.out.println("characters:\t\t" + character);
-        return codeCharacter-character;
+
+        return String.valueOf(codeCharacter-character);
     }
 
-    public int solve2(){
+    public String solve2(){
         int codeCharacter = 0;
         int newCodeCharacter = 0;
-        for(String s : input.split("\n")){
+        for(String s : input){
             codeCharacter += s.length();
             newCodeCharacter += s.length() + 2 + countSpecial(s);
         }
-        return newCodeCharacter-codeCharacter;
+        return String.valueOf(newCodeCharacter-codeCharacter);
     }
+
 
     private int countSpecial(String s) {
         int sum = 0;

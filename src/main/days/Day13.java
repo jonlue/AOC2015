@@ -1,44 +1,42 @@
-package main;
+package main.days;
 
-import java.lang.reflect.Array;
+import main.AOCRiddle;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-public class DinnerTable {
-
-    private String input;
-    private ArrayList<String> mylist = new ArrayList<>();
-
-    public DinnerTable(String input){
-        this.input = input.replaceAll("would",",").replaceAll("happiness units by sitting next to",",").replaceAll(" ","").replaceAll("gain","").replaceAll("lose","-").replaceAll("\r","").replaceAll("\\.","");
+public class Day13 extends AOCRiddle {
+    public Day13(String in, int part) {
+        super(in, part);
+        parse();
     }
 
-    public int solve1(){
-        String[]list = input.split("\n");
-        ArrayList<ArrayList<String>> relations =  getRealtions(list);
-        ArrayList<ArrayList<String>> as = new ArrayList<>();
+    private final List<String> myList = new ArrayList<>();
+    private List<List<String>> relations;
 
-        for(int i = 0; i<7;i++){
+    public String solve1() {
+        List<List<String>> as = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
             as.add(relations.get(i));
         }
 
-        ArrayList<String> possibilities = permute("BCDEFGM", 0, 6);
+        List<String> possibilities = permute("BCDEFGM", 0, 6);
 
-        ArrayList<Integer> sums = new ArrayList<>();
         int maxSum = Integer.MIN_VALUE;
-        for(String s : possibilities) {
+        for (String s : possibilities) {
             int sum = 0;
-            for (int i = 0; i < as.size(); i++) {
-                if(as.get(i).get(0).charAt(1) == s.charAt(0)){
-                    sum += Integer.parseInt(as.get(i).get(1));
-                    for(int j = 0; j<7; j++){
-                        for(ArrayList<String> a : relations){
-                            if(j == 6){
-                                if(s.charAt(j) == a.get(0).charAt(0) && 'A' == a.get(0).charAt(1)){
+            for (List<String> strings : as) {
+                if (strings.get(0).charAt(1) == s.charAt(0)) {
+                    sum += Integer.parseInt(strings.get(1));
+                    for (int j = 0; j < 7; j++) {
+                        for (List<String> a : relations) {
+                            if (j == 6) {
+                                if (s.charAt(j) == a.get(0).charAt(0) && 'A' == a.get(0).charAt(1)) {
                                     sum += Integer.parseInt(a.get(1));
                                     break;
                                 }
-                            }else if(s.charAt(j) == a.get(0).charAt(0) && s.charAt(j+1) == a.get(0).charAt(1)){
+                            } else if (s.charAt(j) == a.get(0).charAt(0) && s.charAt(j + 1) == a.get(0).charAt(1)) {
                                 sum += Integer.parseInt(a.get(1));
                                 break;
                             }
@@ -48,43 +46,39 @@ public class DinnerTable {
                 }
             }
             System.out.println();
-            maxSum = Math.max(sum,maxSum);
-            sums.add(sum);
+            maxSum = Math.max(sum, maxSum);
         }
-        return maxSum;
+        return String.valueOf(maxSum);
     }
 
-    public int solve2(){
-        String[]list = input.split("\n");
-        ArrayList<ArrayList<String>> relations =  getRealtions(list);
+    public String solve2() {
         relations.addAll(getMyself());
+        List<List<String>> as = new ArrayList<>();
 
-        ArrayList<ArrayList<String>> as = new ArrayList<>();
-
-        for(int i = 0; i<7;i++){
+        for (int i = 0; i < 7; i++) {
             as.add(relations.get(i));
         }
-        ArrayList<String> temp = new ArrayList<>();
+        List<String> temp = new ArrayList<>();
         temp.add("AN");
         temp.add("0");
         as.add(temp);
 
-        ArrayList<String> possibilities = permute("BCDEFGMN", 0, 7);
+        List<String> possibilities = permute("BCDEFGMN", 0, 7);
 
         int maxSum = Integer.MIN_VALUE;
-        for(String s : possibilities) {
+        for (String s : possibilities) {
             int sum = 0;
-            for (int i = 0; i < as.size(); i++) {
-                if(as.get(i).get(0).charAt(1) == s.charAt(0)){
-                    sum += Integer.parseInt(as.get(i).get(1));
-                    for(int j = 0; j<8; j++){
-                        for(ArrayList<String> a : relations){
-                            if(j == 7){
-                                if(s.charAt(j) == a.get(0).charAt(0) && 'A' == a.get(0).charAt(1)){
+            for (List<String> strings : as) {
+                if (strings.get(0).charAt(1) == s.charAt(0)) {
+                    sum += Integer.parseInt(strings.get(1));
+                    for (int j = 0; j < 8; j++) {
+                        for (List<String> a : relations) {
+                            if (j == 7) {
+                                if (s.charAt(j) == a.get(0).charAt(0) && 'A' == a.get(0).charAt(1)) {
                                     sum += Integer.parseInt(a.get(1));
                                     break;
                                 }
-                            }else if(s.charAt(j) == a.get(0).charAt(0) && s.charAt(j+1) == a.get(0).charAt(1)){
+                            } else if (s.charAt(j) == a.get(0).charAt(0) && s.charAt(j + 1) == a.get(0).charAt(1)) {
                                 sum += Integer.parseInt(a.get(1));
                                 break;
                             }
@@ -93,9 +87,9 @@ public class DinnerTable {
                     break;
                 }
             }
-            maxSum = Math.max(sum,maxSum);
+            maxSum = Math.max(sum, maxSum);
         }
-        return maxSum;
+        return String.valueOf(maxSum);
     }
 
     private Collection<? extends ArrayList<String>> getMyself() {
@@ -183,48 +177,42 @@ public class DinnerTable {
         return t;
     }
 
-    private ArrayList<String> permute(String str, int l, int r) {
-
+    private List<String> permute(String str, int l, int r) {
         if (l == r)
-            mylist.add(str);
-        else
-        {
-            for (int i = l; i <= r; i++)
-            {
-                str = swap(str,l,i);
-                permute(str, l+1, r);
-                str = swap(str,l,i);
+            myList.add(str);
+        else {
+            for (int i = l; i <= r; i++) {
+                str = swap(str, l, i);
+                permute(str, l + 1, r);
+                str = swap(str, l, i);
             }
         }
-        return  mylist;
+        return myList;
     }
-    public String swap(String a, int i, int j)
-    {
+
+    public String swap(String a, int i, int j) {
         char temp;
         char[] charArray = a.toCharArray();
-        temp = charArray[i] ;
+        temp = charArray[i];
         charArray[i] = charArray[j];
         charArray[j] = temp;
         return String.valueOf(charArray);
     }
 
 
-
-    private ArrayList<ArrayList<String>> getRealtions(String[] list){
-        ArrayList<ArrayList<String>> relations = new ArrayList<>();
-        ArrayList<String[]> pairs = new ArrayList<>();
-        for(String s : list){
+    private List<List<String>> getRelations(String[] list) {
+        List<List<String>> relations = new ArrayList<>();
+        List<String[]> pairs = new ArrayList<>();
+        for (String s : list) {
             pairs.add(s.split(","));
         }
 
-        for(int i = 0; i< pairs.size();i++) {
-            for (int j = 0; j<pairs.size();j++) {
-                String[] p = pairs.get(i);
-                String[] p2 = pairs.get(j);
+        for (String[] p1 : pairs) {
+            for (String[] p2 : pairs) {
 
-                if (p[0].equals(p2[2]) && p[2].equals(p2[0])) {
-                    int temp = Integer.parseInt(p[1]) + Integer.parseInt(p2[1]);
-                    String stringTemp = p[0].charAt(0) + Character.toString(p2[0].charAt(0));
+                if (p1[0].equals(p2[2]) && p1[2].equals(p2[0])) {
+                    int temp = Integer.parseInt(p1[1]) + Integer.parseInt(p2[1]);
+                    String stringTemp = p1[0].charAt(0) + Character.toString(p2[0].charAt(0));
                     ArrayList<String> t = new ArrayList<>();
                     t.add(stringTemp);
                     t.add(Integer.toString(temp));
@@ -233,5 +221,18 @@ public class DinnerTable {
             }
         }
         return relations;
+    }
+
+    private void parse() {
+        String[] in = getInput().replaceAll("would", ",")
+                .replaceAll("happiness units by sitting next to", ",")
+                .replaceAll(" ", "")
+                .replaceAll("gain", "")
+                .replaceAll("lose", "-")
+                .replaceAll("\r", "")
+                .replaceAll("\\.", "")
+                .split("\n");
+
+        relations = getRelations(in);
     }
 }

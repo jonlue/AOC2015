@@ -1,21 +1,36 @@
-package main;
+package main.days;
 
-public class NoMath {
+import main.AOCRiddle;
 
-    private String[] input;
-    private int[] sides = new int[3];
-    private int[] dimensions = new int[3];
-    public  NoMath(String input){
-        this.input = input.replaceAll("\r","").split("\n");
+import java.util.Arrays;
+import java.util.List;
+
+public class Day02 extends AOCRiddle {
+    public Day02(String in, int part){
+        super(in, part);
+        parse();
     }
 
-    public int solve1(){
+    private List<String> eq;
+    private final int[] sides = new int[3];
+    private final int[] dimensions = new int[3];
+
+    public String solve1(){
         int sum = 0;
-        for(String s : input){
+        for(String s : eq){
             parse(s);
             sum += getSurface() + getExtra();
         }
-        return sum;
+        return String.valueOf(sum);
+    }
+
+    public String solve2(){
+        int sum = 0;
+        for (String s : eq){
+            parse(s);
+            sum += getSmallSides() + getBow();
+        }
+        return String.valueOf(sum);
     }
 
     private void parse(String s) {
@@ -41,14 +56,7 @@ public class NoMath {
         return Math.min(sides[0], Math.min(sides[1],sides[2]));
     }
 
-    public int solve2(){
-        int sum = 0;
-        for (String s : input){
-            parse(s);
-            sum += getSmallSides() + getBow();
-        }
-        return sum;
-    }
+
 
     private int getBow() {
         return dimensions[0] * dimensions[1] * dimensions[2];
@@ -56,5 +64,9 @@ public class NoMath {
 
     private int getSmallSides() {
         return 2 * (dimensions[0] + dimensions[1] + dimensions[2] - Math.max(dimensions[0],Math.max(dimensions[1],dimensions[2])));
+    }
+
+    private void parse(){
+        eq = Arrays.asList(getInput().split("\n").clone());
     }
 }

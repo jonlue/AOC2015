@@ -1,27 +1,34 @@
-package main;
+package main.days;
+
+import main.AOCRiddle;
 
 import java.util.HashMap;
 
-public class AssemblyRequired {
+public class Day07 extends AOCRiddle {
+    public Day07(String in,int part) {
+        super(in,part);
+    }
 
-    private final String input;
+    private final String[] input = getInput().replaceAll(" ","").split("\n");
     private static final String KEY = "a";
     private static final String IS_DIGIT = "\\d+";
     private static final int MODULO = 65536;
 
-    public AssemblyRequired(String in) {
-        this.input = in.replaceAll("\r","").replaceAll(" ","");
+
+
+    public String solve1(){
+        return String.valueOf(run(-1));
     }
 
-    public int solve1(){
-        return solve1(-1);
+    public String solve2(){
+        return String.valueOf(run(run(-1)));
     }
-    private int solve1(int startValue){
+
+    private int run(int startValue){
         HashMap<String, Integer> circuit = getEmptyMap();
         circuit.put("b",startValue);
-        String[] ins = input.split("\n");
         while(circuit.get(KEY) == -1) {
-            for (String c : ins) {
+            for (String c : input) {
                 String[] parts = c.split("->");
                 int mode = getMode(parts[0]);
                 parts[0] = parts[0].replaceAll("AND",",").replaceAll("OR",",").replaceAll("NOT","").replaceAll("RSHIFT",",").replaceAll("LSHIFT",",");
@@ -102,10 +109,7 @@ public class AssemblyRequired {
                     if(result != -1) {
                         result = result % MODULO;
                         circuit.put(parts[1], result);
-                        //System.out.println(parts[1] + " " + circuit.get(parts[1]));
                     }
-
-
                 }
             }
         }
@@ -114,7 +118,7 @@ public class AssemblyRequired {
 
     private HashMap<String, Integer> getEmptyMap() {
         HashMap<String,Integer> r = new HashMap<>();
-        String[] in = input.replaceAll("AND",",").replaceAll("OR",",").replaceAll("LSHIFT",",").replaceAll("RSHIFT",",").replaceAll("NOT","").replaceAll("->",",").split("\n");
+        String[] in = getInput().replaceAll("AND",",").replaceAll("OR",",").replaceAll("LSHIFT",",").replaceAll("RSHIFT",",").replaceAll("NOT","").replaceAll("->",",").split("\n");
         for(String command : in){
             String[] parts = command.split(",");
             for(String p : parts){
@@ -127,23 +131,18 @@ public class AssemblyRequired {
     }
 
     private int getMode(String part) {
-        if(part.contains("AND")){
+        if (part.contains("AND")) {
             return 1;
-        }else if(part.contains("OR")){
+        } else if (part.contains("OR")) {
             return 2;
-        }else if(part.contains("NOT")){
+        } else if (part.contains("NOT")) {
             return 3;
-        }else if(part.contains("LSHIFT")){
+        } else if (part.contains("LSHIFT")) {
             return 4;
-        }else if(part.contains("RSHIFT")){
+        } else if (part.contains("RSHIFT")) {
             return 5;
-        }else{
+        } else {
             return 0;
         }
     }
-
-    public int solve2(){
-        return solve1(solve1());
-    }
-
 }

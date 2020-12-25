@@ -1,8 +1,8 @@
-package main;
+package main.days.util;
 
 public class Equipment {
 
-    private String name;
+    private final String name;
     private int cost;
     private int damage;
     private int armor;
@@ -31,7 +31,7 @@ public class Equipment {
         this.armor = armor;
     }
 
-    public Equipment(String name, int cost, int damage, int armor){
+    public Equipment(String name, int cost, int damage, int armor) {
         this.name = name;
         this.cost = cost;
         this.damage = damage;

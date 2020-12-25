@@ -1,22 +1,24 @@
-package main;
+package main.days;
+
+import main.AOCRiddle;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HousesInVacuum {
-
-    private String input;
-    public HousesInVacuum(String input){
-        this.input = input;
+public class Day03 extends AOCRiddle {
+    public Day03(String in, int part){
+        super(in,part);
     }
 
-    public int solve1(){
-        HashMap<Point,Integer> houses = new HashMap<>();
+    private final char[] lines = getInput().toCharArray();
+
+    public String solve1(){
+        Map<Point,Integer> houses = new HashMap<>();
         int x = 0;
         int y = 0;
         houses.put(new Point(x,y),1);
-        for(char c : input.toCharArray()){
+        for(char c : lines){
             if(c == '>'){
                 x++;
             }else if(c == '<'){
@@ -30,10 +32,10 @@ public class HousesInVacuum {
             houses.putIfAbsent(temp,0);
             houses.putIfAbsent(temp,houses.get(temp) + 1);
         }
-        return houses.size();
+        return String.valueOf(houses.size());
     }
 
-    public int solve2(){
+    public String solve2(){
         HashMap<Point,Integer> houses = new HashMap<>();
         int x = 0;
         int y = 0;
@@ -41,7 +43,7 @@ public class HousesInVacuum {
         int ry = 0;
         int count = 0;
         houses.put(new Point(x,y),2);
-        for(char c : input.toCharArray()){
+        for(char c : lines){
             if(c == '>'){
                 if(count%2 == 0) {
                     x++;
@@ -77,6 +79,6 @@ public class HousesInVacuum {
             houses.putIfAbsent(temp,0);
             houses.putIfAbsent(temp,houses.get(temp) + 1);
         }
-        return houses.size();
+        return String.valueOf(houses.size());
     }
 }

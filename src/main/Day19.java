@@ -4,28 +4,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class MedicineRudolph {
-
-    private final String input;
-    private String molecule;
-    private final List<String[]> replacements = new ArrayList<>();
-
-    public MedicineRudolph(String in){
-        this.input = in.replaceAll("\r","").replaceAll(" ","");
+public class Day19 extends AOCRiddle{
+    public Day19(String in, int part){
+        super(in, part);
+        input = getInput().replaceAll(" ","").split("\n");
         getReplacements();
     }
 
-    private void getReplacements() {
-        for(String s : input.split("\n")){
-            if(!s.contains("=>")){
-                molecule = s;
-            }else{
-                replacements.add(s.split("=>"));
-            }
-        }
-    }
+    private final String[] input;
+    private String molecule;
+    private final List<String[]> replacements = new ArrayList<>();
 
-    public int solve1(){
+    public String solve1(){
         HashSet<String> unique = new HashSet<>();
 
         for(String[] r : replacements){
@@ -52,10 +42,10 @@ public class MedicineRudolph {
             }
         }
 
-        return unique.size();
+        return String.valueOf(unique.size());
     }
 
-    public int solve2(){
+    public String solve2(){
         int minSteps = Integer.MAX_VALUE;
         for(String[] r : replacements){
             if(!r[0].equals("e")){
@@ -64,12 +54,21 @@ public class MedicineRudolph {
                 int steps = 0;
                 StringBuilder sb = new StringBuilder(r[1]);
 
-
                 steps++;
                 if(sb.toString().equals(molecule)) {
                     minSteps = Math.min(steps, minSteps);
                 }
         }
-        return minSteps;
+        return String.valueOf(minSteps);
+    }
+
+    private void getReplacements() {
+        for(String s : input){
+            if(!s.contains("=>")){
+                molecule = s;
+            }else{
+                replacements.add(s.split("=>"));
+            }
+        }
     }
 }

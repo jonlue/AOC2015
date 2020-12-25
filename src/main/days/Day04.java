@@ -1,60 +1,61 @@
-package main;
+package main.days;
+
+import main.AOCRiddle;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
-public class IdealStockingStuffer {
+public class Day04 extends AOCRiddle {
 
-    private String input;
+    private final String input = getInput();
+    private MessageDigest md;
 
-    public IdealStockingStuffer(String input){
-        this.input = input.replaceAll("\r","");
+    public Day04(String in, int part){
+        super(in, part);
+        init();
     }
 
-    public int solve1(){
-        boolean running = true;
-        int counter = 1;
-        MessageDigest md = null;
+    private void init() {
         try {
             md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String solve1(){
+        boolean running = true;
+        int counter = 1;
         while(running){
             String message = input.concat(Integer.toString(counter));
             md.update(message.getBytes());
             byte[] digest = md.digest();
 
             if(digest[0] == 0 && digest[1] == 0 && digest[2] <= 0x0F && digest[2] >=0){
-                return counter;
+                running = false;
             }
+
             md.reset();
             counter++;
         }
-        return -1;
+        return String.valueOf(counter);
     }
 
-    public int solve2(){
+    public String solve2(){
         boolean running = true;
         int counter = 1;
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
         while(running){
             String message = input.concat(Integer.toString(counter));
             md.update(message.getBytes());
             byte[] digest = md.digest();
 
             if(digest[0] == 0 && digest[1] == 0 && digest[2] ==0){
-                return counter;
+                running = false;
             }
+
             md.reset();
             counter++;
         }
-        return -1;
+        return String.valueOf(counter);
     }
 
 }

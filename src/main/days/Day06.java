@@ -1,24 +1,23 @@
-package main;
+package main.days;
+
+import main.AOCRiddle;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 
-public class FireHazard {
-
-    private String input;
-
-    private String[] modes = {"turn on ", "turn off ","toggle "};
-
-    public FireHazard(String input){
-        this.input = parse(input);
+public class Day06 extends AOCRiddle {
+    public Day06(String in, int part){
+        super(in,part);
+        parse();
     }
 
+    private String[] coordinates;
 
+    private final String[] modes = {"turn on ", "turn off ","toggle "};
 
-    public int solve1(){
-        String[] coordinates = input.split("\n");
-        HashMap<Point, Boolean> lights = new HashMap<>();
-
+    public String solve1(){
+        Map<Point, Boolean> lights = new HashMap<>();
         for(String c : coordinates) {
             int mode;
             if (c.contains(modes[0])) {
@@ -54,19 +53,10 @@ public class FireHazard {
                 }
             }
         }
-        return countLights(lights);
+        return String.valueOf(countLights(lights));
     }
 
-    private int countLights(HashMap<Point, Boolean> lights) {
-        int sum = 0;
-        for(Point p : lights.keySet()){
-            sum += lights.get(p)? 1:0;
-        }
-        return sum;
-    }
-
-    public int solve2(){
-        String[] coordinates = input.split("\n");
+    public String solve2(){
         HashMap<Point, Integer> lights = new HashMap<>();
 
         for(String c : coordinates) {
@@ -104,7 +94,15 @@ public class FireHazard {
                 }
             }
         }
-        return countBrightness(lights);
+        return String.valueOf(countBrightness(lights));
+    }
+
+    private int countLights(Map<Point, Boolean> lights) {
+        int sum = 0;
+        for(Point p : lights.keySet()){
+            sum += lights.get(p)? 1:0;
+        }
+        return sum;
     }
 
     private int countBrightness(HashMap<Point, Integer> lights) {
@@ -115,7 +113,7 @@ public class FireHazard {
         return sum;
     }
 
-    private String parse(String input){
-        return input.replaceAll(" through ",",").replaceAll("\r","");
+    private void parse(){
+        coordinates = getInput().replaceAll(" through ",",").split("\n");
     }
 }

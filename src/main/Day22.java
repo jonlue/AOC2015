@@ -1,32 +1,34 @@
 package main;
 
+import main.days.util.Spell;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class WizardSimulator {
-
-    private String input;
-    private static final int START_HEALTH = 50;
-    private static final int START_MANA = 500;
-
-    public WizardSimulator(String in) {
-        this.input = in;
+public class Day22 extends AOCRiddle{
+    public Day22(String in, int part) {
+        super(in,part);
+        parse();
     }
 
-    public int solve1() {
-        List<Spell> spells = getSpells();
-        String[] boss = input.replaceAll("Hit Points: ","").replaceAll("Damage: ","").split("\n");
-        int bHealth = Integer.parseInt(boss[0]);
-        int bDamage = Integer.parseInt(boss[1]);
+    private String[] boss;
+    private static final int START_HEALTH = 50;
+    private static final int START_MANA = 500;
+    private List<Spell> spells = getSpells();
+    private int bossHealth;
+    private int bossDamage;
 
+    public String solve1() {
         int minMana = Integer.MAX_VALUE;
-
         int manaCost = 0;
 
 
-
         minMana = Math.min(manaCost,minMana);
-        return 0;
+        return "-1";
+    }
+
+    public String solve2() {
+        return "-1";
     }
 
     private List<Spell> getSpells() {
@@ -41,7 +43,13 @@ public class WizardSimulator {
         return spells;
     }
 
-    public int solve2() {
-        return 0;
+
+
+    private void parse() {
+        boss = getInput().replaceAll("Hit Points: ","")
+                .replaceAll("Damage: ","")
+                .split("\n");
+        bossHealth = Integer.parseInt(boss[0]);
+        bossDamage = Integer.parseInt(boss[1]);
     }
 }

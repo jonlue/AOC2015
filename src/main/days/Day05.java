@@ -1,34 +1,37 @@
-package main;
+package main.days;
+
+import main.AOCRiddle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 
-public class InternElves {
-
-    private String input;
-    private String[] illegalSequences = {"ab","cd","pq","xy"};
-
-    public InternElves(String input){
-        this.input = input;
+public class Day05 extends AOCRiddle {
+    public Day05(String in, int part){
+        super(in,part);
+        parse();
     }
 
+    private List<String> names;
 
-    public int solve1(){
-
-        String[] names = input.replaceAll("\r","").split("\n");
+    public String solve1(){
         List<String> good = new ArrayList<>();
-        List<String> bad = new ArrayList<>();
         for(String n : names){
             if (countVowels(n) && n.matches("\\S*(\\w)\\1+\\S*") && n.matches("^(?!.*?(?:ab|cd|pq|xy)).*$")){
                 System.out.println(n);
                 good.add(n);
-            }else{
-                bad.add(n);
             }
         }
-        System.out.println(bad.size());
-        return good.size();
+        return String.valueOf(good.size());
+    }
+    public String solve2(){
+        List<String> good = new ArrayList<>();
+        for(String n : names){
+            if (checkPair(n) && checkRepeat(n)){
+                good.add(n);
+            }
+        }
+        return String.valueOf(good.size());
     }
 
     private boolean countVowels(String n) {
@@ -39,22 +42,6 @@ public class InternElves {
         sum += n.chars().filter(ch->ch == 'o').count();
         sum += n.chars().filter(ch->ch == 'u').count();
         return sum>=3;
-    }
-
-    public int solve2(){
-        String[] names = input.replaceAll("\r","").split("\n");
-        List<String> good = new ArrayList<>();
-        List<String> bad = new ArrayList<>();
-        for(String n : names){
-            if (checkPair(n) && checkRepeat(n)){
-                //System.out.println(n);
-                good.add(n);
-            }else{
-                bad.add(n);
-            }
-        }
-        System.out.println(bad.size());
-        return good.size();
     }
 
     private boolean checkRepeat(String n) {
@@ -71,11 +58,13 @@ public class InternElves {
             String t = Character.toString(n.charAt(i)) + n.charAt(i+1);
             String t2 = n.substring(0,i) +" "+ n.substring(i+2);
             if(t2.contains(t)){
-                //System.out.println(n);
-                //System.out.println(t);
                 return true;
             }
         }
         return false;
+    }
+
+    private void parse(){
+        names = Arrays.asList(getInput().split("\n").clone());
     }
 }
