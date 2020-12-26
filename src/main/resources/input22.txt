@@ -1,2 +1,5 @@
 Hit Points: 51
 Damage: 9
+
+13
+8
