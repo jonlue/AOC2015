@@ -3,8 +3,7 @@ package main;
 import main.days.util.RPGChar;
 import main.days.util.Spell;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Day22 extends AOCRiddle{
     public Day22(String in, int part) {
@@ -12,18 +11,17 @@ public class Day22 extends AOCRiddle{
         parse();
     }
 
-    private static final int START_HEALTH = 50; //10
-    private static final int START_MANA = 500; //250
+    private static final int START_HEALTH = 10; //10
+    private static final int START_MANA = 250; //250
     private final List<Spell> spells = getSpells();
     private int bossHealth;
     private int bossDamage;
-    private int minMana;
 
     public String solve1() {
-        minMana = Integer.MAX_VALUE;
+        int minMana = Integer.MAX_VALUE;
 
         for(Spell s : spells){
-            minMana = Math.min(simulate(new Spell(s), new RPGChar(START_HEALTH,START_MANA,0), new RPGChar(bossHealth,0,0), new ArrayList<>(), 0), minMana);
+            minMana = Math.min(simulate(new Spell(s), new RPGChar(START_HEALTH,START_MANA,0), new RPGChar(bossHealth,0,0), new ArrayList<>(), 0, minMana), minMana);
         }
 
         return String.valueOf(minMana);
@@ -36,7 +34,7 @@ public class Day22 extends AOCRiddle{
         return "-1 ";
     }
 
-    private int simulate(Spell spell, RPGChar me, RPGChar boss, List<Spell> activeSpells, int totalMana){
+    private int simulate(Spell spell, RPGChar me, RPGChar boss, List<Spell> activeSpells, int totalMana, int minMana){
         RPGChar[] temp;
         // player turn
         if(me.getMana() < spell.getCost() || totalMana > minMana){
@@ -85,7 +83,7 @@ public class Day22 extends AOCRiddle{
             for(Spell toCopy : activeSpells){
                 copy.add(new Spell(toCopy));
             }
-            mana = Math.min(simulate(new Spell(s),new RPGChar(me), new RPGChar(boss), copy, totalMana + spell.getCost()), mana);
+            mana = Math.min(simulate(new Spell(s),new RPGChar(me), new RPGChar(boss), copy, totalMana + spell.getCost(), Math.min(minMana, mana)), mana);
         }
         return mana;
     }

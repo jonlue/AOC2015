@@ -1,8 +1,6 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Day19 extends AOCRiddle{
     public Day19(String in, int part){
@@ -46,6 +44,7 @@ public class Day19 extends AOCRiddle{
     }
 
     public String solve2(){
+        rename();
         int minSteps = Integer.MAX_VALUE;
         for(String[] r : replacements){
             if(!r[0].equals("e")){
@@ -70,5 +69,26 @@ public class Day19 extends AOCRiddle{
                 replacements.add(s.split("=>"));
             }
         }
+    }
+
+    private String rename(){
+        String in = getInput();
+        char newChar = 'A';
+        String[] keys = getInput().replaceAll(" => [a-zA-Z]*\n", ",").split(",");
+        String before ="";
+
+        for(String s : keys){
+            if(s.equals("e")){
+                break;
+            }
+            if(s.equals(before)){
+                continue;
+            }
+            in = in.replaceAll(s , String.valueOf(newChar));
+            newChar++;
+            before = s;
+        }
+
+        return in;
     }
 }
