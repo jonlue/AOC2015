@@ -1,5 +1,6 @@
-package main;
+package main.days;
 
+import main.AOCRiddle;
 import main.days.util.RPGChar;
 import main.days.util.Spell;
 
