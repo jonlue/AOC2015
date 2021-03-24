@@ -9,7 +9,7 @@ public class Day19 extends AOCRiddle{
         getReplacements();
     }
 
-    private final String[] input;
+    private String[] input;
     private String molecule;
     private final List<String[]> replacements = new ArrayList<>();
 
@@ -44,21 +44,19 @@ public class Day19 extends AOCRiddle{
     }
 
     public String solve2(){
-        rename();
-        int minSteps = Integer.MAX_VALUE;
-        for(String[] r : replacements){
-            if(!r[0].equals("e")){
-                continue;
-            }
-                int steps = 0;
-                StringBuilder sb = new StringBuilder(r[1]);
-
-                steps++;
-                if(sb.toString().equals(molecule)) {
-                    minSteps = Math.min(steps, minSteps);
+        input = rename().replace(" ","").split("\n");
+        getReplacements();
+        int count = 0;
+        while(!molecule.equals("e")){
+            for(String[] r : replacements){
+                while(molecule.contains(r[1])){
+                    count++;
+                    molecule = molecule.replaceFirst(r[1],r[0]);
                 }
+            }
         }
-        return String.valueOf(minSteps);
+
+        return String.valueOf(count);
     }
 
     private void getReplacements() {
@@ -87,6 +85,19 @@ public class Day19 extends AOCRiddle{
             in = in.replaceAll(s , String.valueOf(newChar));
             newChar++;
             before = s;
+        }
+        HashSet<String> alreadyReplaced = new HashSet<>();
+        for(String s : in.split("\n")){
+            for(int i = 0; i< s.length()-1; i++){
+                String t =""+ s.charAt(i) + s.charAt(i+1);
+                if(s.charAt(i) >= 'A' && s.charAt(i) <= 'Z'
+                        && s.charAt(i+1) >='a' && s.charAt(i+1) <= 'z'
+                        && !alreadyReplaced.contains(t)){
+                    alreadyReplaced.add(t);
+                    in = in.replace(t,String.valueOf(newChar));
+                    newChar++;
+                }
+            }
         }
 
         return in;
