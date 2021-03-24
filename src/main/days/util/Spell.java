@@ -1,6 +1,10 @@
 package main.days.util;
 
+import java.util.Objects;
+
 public class Spell {
+
+
 
     private final String name;
     private final int cost;
@@ -22,7 +26,7 @@ public class Spell {
         this.health = health;
         this.mana = mana;
         this.isInstant = duration == 0;
-        this.timer = 0;
+        this.timer = duration;
         this.isActive = false;
     }
 
@@ -50,33 +54,67 @@ public class Spell {
     public boolean isActive(){
         return this.isActive;
     }
-    public boolean isInactive(){
-        return !this.isActive;
-    }
 
     public boolean isInstant(){
         return isInstant;
     }
 
+
     private void addTimer(){
-        timer++;
-        if(timer >= duration){
-            timer = 0;
+        timer--;
+        if(timer == 0){
+            timer = duration;
             isActive = false;
         }
     }
 
-    public RPGChar[] cast(RPGChar caster, RPGChar receiver){
+    public void causeEffect(RPGChar caster, RPGChar receiver){
+        if(isInstant) return;
         if(isActive) {
-            caster.changeHealth(health);
+            caster.heal(health);
             caster.changeMana(mana);
             caster.setArmor(Math.max(armor, caster.getArmor()));
-            receiver.changeHealth(-damage);
+            receiver.takeDamage(damage);
             addTimer();
-        }else if(name.equals("Shield")){
+        }
+        if(!isActive && name.equals("Shield")){
             caster.setArmor(0);
         }
-        return new RPGChar[]{caster, receiver};
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Spell spell = (Spell) o;
+        return Objects.equals(name, spell.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "Spell{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
 }
